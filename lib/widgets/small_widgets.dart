@@ -40,6 +40,7 @@ class MyTextfield extends StatelessWidget {
       controller: mycontroller,
       autocorrect: correction,
       cursorColor: blueclr,
+      textCapitalization: TextCapitalization.sentences,
     );
   }
 }

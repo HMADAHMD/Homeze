@@ -38,6 +38,12 @@ class FirestoreMethods {
         price: price,
       );
       _firestore.collection('tasks').doc(taskId).set(post.toJson());
+      _firestore
+          .collection("users")
+          .doc(uid)
+          .collection('myTasks')
+          .doc(taskId)
+          .set(post.toJson());
       res = 'success';
     } catch (err) {
       res = err.toString();
@@ -57,7 +63,6 @@ class FirestoreMethods {
   ) async {
     String res = 'Some Error Ocurred';
     try {
-      
       AcceptedOffer acceptedOffer = AcceptedOffer(
         fullname: fullname,
         address: address,
@@ -104,5 +109,42 @@ class FirestoreMethods {
       res = err.toString();
     }
     return res;
+  }
+
+  getUserChats(String itIsMyName) async {
+    return _firestore
+        .collection("chatRoom")
+        .where('users', arrayContains: itIsMyName)
+        .snapshots();
+  }
+
+  addChatRoom(chatRoom, chatRoomId) {
+    _firestore
+        .collection("chatRoom")
+        .doc(chatRoomId)
+        .set(chatRoom)
+        .catchError((e) {
+      print(e);
+    });
+  }
+
+  Future<void> addMessage(String chatRoomId, chatMessageData) async {
+    _firestore
+        .collection("chatRoom")
+        .doc(chatRoomId)
+        .collection("chats")
+        .add(chatMessageData)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
+
+  getChats(String chatRoomId) async {
+    return _firestore
+        .collection("chatRoom")
+        .doc(chatRoomId)
+        .collection("chats")
+        .orderBy('time')
+        .snapshots();
   }
 }

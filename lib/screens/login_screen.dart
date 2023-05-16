@@ -63,9 +63,12 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 40,
               ),
-              Image.asset("assets/images/Login.jpg"),
+              Image.asset(
+                "assets/images/Login.jpg",
+                scale: 20,
+              ),
               Text(
-                "Login",
+                "HomeZe\n   Login",
                 style: GoogleFonts.poppins(
                   color: blueclr,
                   fontSize: 50,
@@ -73,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(
-                height: 100,
+                height: 10,
               ),
               Container(
                 decoration: const BoxDecoration(
@@ -130,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(
-                height: 80,
+                height: 70,
               ),
               Container(
                 child: RichText(

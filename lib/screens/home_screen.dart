@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:homeze_screens/provider/user_provider.dart';
+import 'package:homeze_screens/screens/chatrooms_screen.dart';
 import 'package:homeze_screens/screens/map_screen.dart';
 import 'package:homeze_screens/screens/profile_screen.dart';
 import 'package:homeze_screens/utils/constants.dart';
@@ -64,7 +65,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ChatroomsList()));
+              },
               icon: const Icon(
                 Icons.chat_rounded,
                 color: blueclr,
@@ -146,8 +150,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: ListView(
           scrollDirection: Axis.vertical,
-
-          // this is the first container of intro
           children: [
             Container(
               child: Column(

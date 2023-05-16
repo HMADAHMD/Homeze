@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:homeze_screens/provider/user_provider.dart';
 import 'package:homeze_screens/screens/login_screen.dart';
 import 'package:homeze_screens/utils/constants.dart';
 import 'package:homeze_screens/widgets/small_widgets.dart';
+import 'package:homeze_screens/models/user.dart' as model;
+import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -12,15 +15,16 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-
-   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   logoutButton() async {
-      await _auth.signOut();
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => LoginScreen()));
-    }
+    await _auth.signOut();
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+  }
+
   @override
   Widget build(BuildContext context) {
+    model.User user = Provider.of<UserProvider>(context).getUser;
     return Scaffold(
         body: SafeArea(
       child: Column(
@@ -35,9 +39,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       width: 20,
                     ),
                     Container(
-                      child: const CircleAvatar(
+                      child: CircleAvatar(
                         radius: 40,
-                        backgroundImage: AssetImage('assets/images/man.jpeg'),
+                        backgroundImage: NetworkImage(user.photoURL),
                       ),
                     ),
                     const SizedBox(
@@ -46,9 +50,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text(
-                          "Josh Redim",
+                          user.fullname,
                           style: TextStyle(
                               fontSize: 30,
                               color: orangeclr,
@@ -58,13 +62,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           height: 10,
                         ),
                         Text(
-                          'josh.redd@gmail.com',
+                          user.email,
                           style: TextStyle(fontSize: 15, color: blueclr),
                         ),
                         const SizedBox(
                           height: 5,
                         ),
-                        Text('923000000000',
+                        Text(user.number,
                             style: TextStyle(fontSize: 15, color: blueclr)),
                       ],
                     )
