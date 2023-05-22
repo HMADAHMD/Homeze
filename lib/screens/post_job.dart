@@ -78,7 +78,8 @@ class _PostJobState extends State<PostJob> {
             autocorrect: false,
             keyboardType: TextInputType.number,
             cursorColor: orangeclr,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
+              hintText: "add your price",
                 fillColor: grayclr,
                 filled: true,
                 enabledBorder:
@@ -199,8 +200,8 @@ class _PostJobState extends State<PostJob> {
                 child: Center(
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => MapScreen()));
+                      // Navigator.pushReplacement(context,
+                      //     MaterialPageRoute(builder: (context) => MapScreen()));
                     },
                     child: Text(
                       Provider.of<UserProvider>(context).useraddress != null

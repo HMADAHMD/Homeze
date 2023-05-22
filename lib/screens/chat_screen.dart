@@ -25,7 +25,6 @@ class _ChatState extends State<Chat> {
       builder: (context, snapshot) {
         return snapshot.hasData
             ? ListView.builder(
-                reverse: true,
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   //final message = snapshot.data!.docs;
@@ -46,7 +45,7 @@ class _ChatState extends State<Chat> {
       Map<String, dynamic> chatMessageMap = {
         "sendBy": user.fullname,
         "message": messageEditingController.text,
-        'time': DateTime.now().millisecondsSinceEpoch,
+        'time': DateTime.now(),
       };
 
       FirestoreMethods().addMessage(widget.chatRoomId, chatMessageMap);

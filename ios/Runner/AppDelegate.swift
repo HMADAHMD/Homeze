@@ -10,6 +10,16 @@ import GoogleMaps
   ) -> Bool {
     GMSServices.provideAPIKey("AIzaSyBOwNtjUmHZOHLGwF5ZUQrnOe7t0pmXaMw")
     GeneratedPluginRegistrant.register(with: self)
+    let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
+        let restartChannel = FlutterMethodChannel(name: "com.example.myapp/restart", binaryMessenger: controller.binaryMessenger)
+        restartChannel.setMethodCallHandler({
+          (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
+          if (call.method == "restart") {
+            exit(0)
+          } else {
+            result(FlutterMethodNotImplemented)
+          }
+        })
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }

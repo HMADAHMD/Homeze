@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:homeze_screens/provider/user_provider.dart';
 import 'package:homeze_screens/screens/chatrooms_screen.dart';
 import 'package:homeze_screens/screens/map_screen.dart';
@@ -41,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
   //     }
   //   });
   // }
+  Set<Marker> markersSet = {};
 
   @override
   Widget build(BuildContext context) {

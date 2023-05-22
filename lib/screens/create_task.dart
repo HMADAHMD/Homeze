@@ -1,8 +1,16 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:homeze_screens/models/active_nearby_taskers.dart';
+import 'package:homeze_screens/resources/goefire_assistant.dart';
 import 'package:homeze_screens/screens/map_screen.dart';
 import 'package:homeze_screens/utils/constants.dart';
 import 'package:homeze_screens/widgets/small_widgets.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../utils/utils.dart';
 
 class CreateTask extends StatefulWidget {
   @override
@@ -12,7 +20,11 @@ class CreateTask extends StatefulWidget {
 class _CreateTaskState extends State<CreateTask> {
   final _infoController = TextEditingController();
   final _priceController = TextEditingController();
+  final _titleController = TextEditingController();
+  Uint8List? _image;
   String _taskPrice = '0';
+
+  List<ActiveNearbyTaskers> nearbyAvailableTaskers = [];
 
   myAlertView() {
     showDialog(
@@ -26,6 +38,7 @@ class _CreateTaskState extends State<CreateTask> {
             keyboardType: TextInputType.number,
             cursorColor: orangeclr,
             decoration: const InputDecoration(
+                hintText: "add your price",
                 fillColor: grayclr,
                 filled: true,
                 enabledBorder:
@@ -64,6 +77,25 @@ class _CreateTaskState extends State<CreateTask> {
     );
   }
 
+  void addPostImage() async {
+    Uint8List img = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = img;
+    });
+  }
+
+  saveTaskInformation() {
+    nearbyAvailableTaskers = GeofireAssistant.activeNearbyTaskersList;
+    searchNearbyTasker();
+  }
+
+  searchNearbyTasker() async {
+    if (nearbyAvailableTaskers.length == 0) {
+      
+      return;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,21 +114,41 @@ class _CreateTaskState extends State<CreateTask> {
             scrollDirection: Axis.vertical,
             children: [
               Text(
-                'Provide Instructions about task',
+                'Get anything done in minutes',
                 style: GoogleFonts.poppins(
-                    fontSize: 25, fontWeight: FontWeight.w600, color: blueclr),
+                    fontSize: 25, fontWeight: FontWeight.w400, color: blueclr),
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              Categories(type: 'Select Type of work', isCheck: false),
               const SizedBox(
                 height: 10,
               ),
               Text(
-                'Give some brief instructions',
+                'Title',
                 style: GoogleFonts.poppins(
-                    fontSize: 25, fontWeight: FontWeight.w600, color: blueclr),
+                    fontSize: 18, fontWeight: FontWeight.w400, color: blueclr),
+              ),
+              const SizedBox(
+                height: 2,
+              ),
+              TextField(
+                controller: _titleController,
+                cursorColor: orangeclr,
+                textCapitalization: TextCapitalization.sentences,
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    fillColor: grayclr,
+                    filled: true,
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(color: darkgray)),
+                    errorBorder: OutlineInputBorder(),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: orangeclr)),
+                    hintText: 'e.g. fix my car'),
+              ),
+              Text(
+                'Details',
+                style: GoogleFonts.poppins(
+                    fontSize: 18, fontWeight: FontWeight.w400, color: blueclr),
               ),
               Container(
                   height: 160,
@@ -112,32 +164,43 @@ class _CreateTaskState extends State<CreateTask> {
                             borderSide: BorderSide(color: darkgray),
                             borderRadius: BorderRadius.circular(10)),
                         errorBorder: OutlineInputBorder(),
-                        focusedBorder: OutlineInputBorder(),
-                        hintText: 'Give some brief about work...'),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: orangeclr)),
+                        hintText: 'provide details about your problem'),
                   )),
               Container(
-                height: 120,
+                height: 150,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10), color: skyclr),
                 child: Center(
                   child: GestureDetector(
-                    onTap: () {},
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/images/upload.png',
-                          height: 70,
-                        ),
-                        Text(
-                          'upload image',
-                          style: TextStyle(fontSize: 17),
-                        )
-                      ],
-                    ),
+                    onTap: () {
+                      addPostImage();
+                    },
+                    child: _image != null
+                        ? Image.memory(
+                            _image!,
+                            fit: BoxFit.fill,
+                          )
+                        : Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'assets/images/upload.png',
+                                height: 70,
+                              ),
+                              Text(
+                                'upload image',
+                                style: TextStyle(fontSize: 17),
+                              )
+                            ],
+                          ),
                   ),
                 ),
+              ),
+              const SizedBox(
+                height: 10,
               ),
               Expanded(
                 child: Row(
@@ -177,8 +240,14 @@ class _CreateTaskState extends State<CreateTask> {
               MyTextButtons(
                   name: 'Search',
                   myOnPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => MapScreen()));
+                    if (_taskPrice != '0' && _image != null) {
+                      saveTaskInformation();
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => MapScreen()));
+                    } else {
+                      Fluttertoast.showToast(
+                          msg: "Please provide all details correctly");
+                    }
                   })
             ],
           ),
