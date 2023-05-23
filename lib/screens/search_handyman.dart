@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -138,11 +139,36 @@ class _SearchHandymanState extends State<SearchHandyman> {
       return;
     }
     await retrieveOnlineTaskers(nearbyAvailableTaskers);
-    Navigator.push(
+    var response = await Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => ActiveTaskersScreen(
                 refTaskRequest: refTaskRequest, taskCost: taskCost)));
+
+    if (response == "taskerSelected") {
+      FirebaseDatabase.instance
+          .ref()
+          .child('tasker')
+          .child(seletedTaskerId!)
+          .once()
+          .then((snap) {
+        if (snap.snapshot.value != null) {
+          //send notifocaiton to that specific tasker
+          sendNotificationToTaskerNow(seletedTaskerId!);
+        } else {
+          Fluttertoast.showToast(msg: 'This tasker do not exist');
+        }
+      });
+    }
+  }
+
+  sendNotificationToTaskerNow(String selectedTaskerId) {
+    FirebaseDatabase.instance
+        .ref()
+        .child('tasker')
+        .child(seletedTaskerId!)
+        .child('taskerStatus')
+        .set(refTaskRequest!.key);
   }
 
   retrieveOnlineTaskers(List onlineTaskers) async {

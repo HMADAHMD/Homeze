@@ -10,8 +10,7 @@ import 'package:smooth_star_rating_nsafe/smooth_star_rating.dart';
 class ActiveTaskersScreen extends StatefulWidget {
   final taskCost;
   DatabaseReference? refTaskRequest;
-  ActiveTaskersScreen(
-      {super.key, this.refTaskRequest, required this.taskCost});
+  ActiveTaskersScreen({super.key, this.refTaskRequest, required this.taskCost});
 
   @override
   State<ActiveTaskersScreen> createState() => _ActiveTaskersScreenState();
@@ -45,37 +44,49 @@ class _ActiveTaskersScreenState extends State<ActiveTaskersScreen> {
       body: ListView.builder(
         itemCount: dList.length,
         itemBuilder: (BuildContext context, int index) {
-          return Card(
-            color: grayclr,
-            elevation: 3,
-            shadowColor: blueclr,
-            margin: EdgeInsets.all(8),
-            child: ListTile(
-              leading: Image.asset(
-                'assets/images2/' +
-                    dList[index]['profession']['profession'].toString() +
-                    '.png',
-                //"assets/images2/Cleaning.png",
-                width: 50,
-              ),
-              title:
-                  Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-                Text(
-                  dList[index]['name'],
-                  style: TextStyle(fontSize: 14),
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                seletedTaskerId = dList[index]['id'].toString();
+              });
+              Navigator.pop(context, 'taskerSelected');
+            },
+            child: Card(
+              color: grayclr,
+              elevation: 3,
+              shadowColor: blueclr,
+              margin: EdgeInsets.all(8),
+              child: ListTile(
+                leading: Image.asset(
+                  'assets/images2/' +
+                      dList[index]['profession']['profession'].toString() +
+                      '.png',
+                  //"assets/images2/Cleaning.png",
+                  width: 50,
                 ),
-                Text(dList[index]['profession']['experience'].toString()),
-                SmoothStarRating(
-                  rating: 3.5,
-                  color: Colors.amber[600],
-                  borderColor: Colors.black,
-                  allowHalfRating: true,
-                  starCount: 5,
-                  size: 15,
+                title: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        dList[index]['name'],
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w500),
+                      ),
+                      Text("Working for " +
+                          dList[index]['profession']['experience'].toString() +
+                          " years"),
+                      SmoothStarRating(
+                        rating: 3.5,
+                        color: Colors.amber[600],
+                        borderColor: Colors.black,
+                        allowHalfRating: true,
+                        starCount: 5,
+                        size: 15,
+                      ),
+                    ]),
+                trailing: Column(
+                  children: [Text("Rs." + widget.taskCost.toString())],
                 ),
-              ]),
-              trailing: Column(
-                children: [Text(widget.taskCost.toString())],
               ),
             ),
           );

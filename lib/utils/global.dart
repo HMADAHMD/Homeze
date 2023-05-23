@@ -3,6 +3,7 @@ import 'package:homeze_screens/models/user_model.dart';
 
 List dList = [];
 UserModel? userModelInfo;
+String? seletedTaskerId = '';
 void restartApp() async {
   const platform = const MethodChannel('com.example.myapp/restart');
   try {
