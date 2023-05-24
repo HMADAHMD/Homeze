@@ -116,8 +116,15 @@ class _SearchHandymanState extends State<SearchHandyman> {
       'userPhone': user.number,
       'workLocationAddress': workLocation.locationName,
       'taskerId': 'waiting',
+      'title': _titleController.text,
+      'description': _infoController.text,
+      'askedPrice': taskCost,
+      'userId': user.uid,
+      'bargainPrice': "",
+      'finalPrice': "",
     };
     refTaskRequest!.set(userInfoMap);
+    referTaskID = refTaskRequest!;
 
     nearbyAvailableTaskers = GeofireAssistant.activeNearbyTaskersList;
     searchNearbyTasker();
@@ -326,25 +333,25 @@ class _SearchHandymanState extends State<SearchHandyman> {
                     ),
                     Row(
                       children: [
-                        Expanded(
-                            flex: 1,
-                            child: GestureDetector(
-                              onTap: () {
-                                addPostImage();
-                              },
-                              child: Container(
-                                height: 50,
-                                decoration: BoxDecoration(
-                                    color: darkgray,
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: _image != null
-                                    ? Image.memory(
-                                        _image!,
-                                        fit: BoxFit.fill,
-                                      )
-                                    : Center(child: Text('Add Image')),
-                              ),
-                            )),
+                        // Expanded(
+                        //     flex: 1,
+                        //     child: GestureDetector(
+                        //       onTap: () {
+                        //         addPostImage();
+                        //       },
+                        //       child: Container(
+                        //         height: 50,
+                        //         decoration: BoxDecoration(
+                        //             color: darkgray,
+                        //             borderRadius: BorderRadius.circular(10)),
+                        //         child: _image != null
+                        //             ? Image.memory(
+                        //                 _image!,
+                        //                 fit: BoxFit.fill,
+                        //               )
+                        //             : Center(child: Text('Add Image')),
+                        //       ),
+                        //     )),
                         const SizedBox(
                           width: 2,
                         ),
@@ -367,13 +374,13 @@ class _SearchHandymanState extends State<SearchHandyman> {
                                   )),
                             )),
                         const SizedBox(
-                          width: 2,
+                          width: 20,
                         ),
                         Expanded(
                             flex: 1,
                             child: GestureDetector(
                                 onTap: () {
-                                  if (taskCost != '0' && _image != null) {
+                                  if (taskCost != '0') {
                                     saveTaskInformation();
                                   } else {
                                     Fluttertoast.showToast(
