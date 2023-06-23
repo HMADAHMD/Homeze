@@ -7,9 +7,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:homeze_screens/models/active_nearby_taskers.dart';
 import 'package:homeze_screens/provider/user_provider.dart';
+import 'package:homeze_screens/resources/assistant_methods.dart';
 import 'package:homeze_screens/resources/goefire_assistant.dart';
 import 'package:homeze_screens/resources/http_response.dart';
 import 'package:homeze_screens/screens/active_taskers_screen.dart';
@@ -176,6 +178,27 @@ class _SearchHandymanState extends State<SearchHandyman> {
         .child(seletedTaskerId!)
         .child('taskerStatus')
         .set(refTaskRequest!.key);
+
+    //automate push notification
+    FirebaseDatabase.instance
+        .ref()
+        .child('tasker')
+        .child(selectedTaskerId)
+        .child('token')
+        .once()
+        .then((snap) {
+      if (snap.snapshot.value != null) {
+        String deviceRegistrationToken = snap.snapshot.value.toString();
+
+        //send notification now
+        AssistantMethods.sendNotificationToTaskerNow(
+            deviceRegistrationToken, refTaskRequest!.key.toString(), context);
+        Fluttertoast.showToast(msg: 'Notification Sent');
+      } else {
+        Fluttertoast.showToast(msg: "This tasker is not available");
+        return;
+      }
+    });
   }
 
   retrieveOnlineTaskers(List onlineTaskers) async {
@@ -395,11 +418,11 @@ class _SearchHandymanState extends State<SearchHandyman> {
                                       borderRadius: BorderRadius.circular(10)),
                                   child: const Center(
                                       child: Text(
-                                    "Search",
+                                    "Search Tasker",
                                     style: TextStyle(
                                         color: blueclr,
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 20),
+                                        fontSize: 18),
                                   )),
                                 )))
                       ],

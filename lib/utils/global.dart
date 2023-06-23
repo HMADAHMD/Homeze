@@ -8,6 +8,9 @@ UserModel? userModelInfo;
 UserData onlineUserData = UserData();
 String? seletedTaskerId = '';
 DatabaseReference? referTaskID;
+String cloudMessagingServerToken =
+    "key=AAAAQ3Gq2f8:APA91bHl_H63FMkhhEZKaooSZyl5tPNjf2RjXS62_JAwf1ZPDtLCkJFOLZeghG9bQZcoPHJkmjM9hrmBwIwo_-hTU2MBrUvIYo936iyoEeKT9V3fp7ow5udyJNQNgqCRzhSHj-1ziS8r";
+// "key=AAAAQ3Gq2f8:APA91bHl_H63FMkhhEZKaooSZyl5tPNjf2RjXS62_JAwf1ZPDtLCkJFOLZeghG9bQZcoPHJkmjM9hrmBwIwo_-hTU2MBrUvIYo936iyoEeKT9V3fp7ow5udyJNQNgqCRzhSHj-1ziS8r";
 void restartApp() async {
   const platform = const MethodChannel('com.example.myapp/restart');
   try {

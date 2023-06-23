@@ -1,8 +1,11 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:homeze_screens/screens/create_task.dart';
 import 'package:homeze_screens/screens/home_screen.dart';
 import 'package:homeze_screens/screens/order_screen.dart';
 import 'package:homeze_screens/screens/profile_screen.dart';
+import 'package:homeze_screens/screens/search_handyman.dart';
 import 'package:homeze_screens/screens/service_screen.dart';
 import 'package:homeze_screens/utils/bottom_tabs.dart';
 import 'package:homeze_screens/utils/constants.dart';
@@ -15,8 +18,16 @@ class MobileScreen extends StatefulWidget {
 
 class _MobileScreenState extends State<MobileScreen> {
   //method to get access to the collection and then getting the username
-
   int _currentIndex = 0;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    //   Navigator.push(
+    //       context, MaterialPageRoute(builder: (context) => SearchHandyman()));
+    // });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +45,7 @@ class _MobileScreenState extends State<MobileScreen> {
           });
         },
         items: const [
+          
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home,

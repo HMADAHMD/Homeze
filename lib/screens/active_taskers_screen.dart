@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:homeze_screens/utils/constants.dart';
 import 'package:homeze_screens/utils/global.dart';
 import 'package:smooth_star_rating_nsafe/smooth_star_rating.dart';
@@ -50,6 +51,7 @@ class _ActiveTaskersScreenState extends State<ActiveTaskersScreen> {
                 seletedTaskerId = dList[index]['id'].toString();
               });
               Navigator.pop(context, 'taskerSelected');
+              Fluttertoast.showToast(msg: "Go to Home Screen Now!!");
             },
             child: Card(
               color: grayclr,

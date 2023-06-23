@@ -67,7 +67,7 @@ class _NotificationDialogueBoxState extends State<NotificationDialogueBox> {
                         fontWeight: FontWeight.w400),
                   ),
                   Text(
-                    'Details: ${widget.userTaskRequest!.description!} dsbfjksbfkjsdjvklsdklvbsdlkbvkldbsnklbvjbsdvkjb kjdsbv',
+                    'Details: ${widget.userTaskRequest!.description!}',
                     style: const TextStyle(
                         color: blueclr,
                         fontSize: 14,
@@ -138,7 +138,7 @@ class _NotificationDialogueBoxState extends State<NotificationDialogueBox> {
 
                         //accept the rideRequest
                         acceptTaskRequest(context);
-                        // Navigator.pop(context);
+                        Navigator.pop(context);
                       },
                       child: Text(
                         "Accept".toUpperCase(),
@@ -159,11 +159,11 @@ class _NotificationDialogueBoxState extends State<NotificationDialogueBox> {
 
   declineTaskRequest(BuildContext context) {
     FirebaseDatabase.instance
-            .ref()
-            .child("tasksRequest")
-            .child(widget.userTaskRequest!.taskRequestId!)
-            .child("bargainPrice")
-            .set('');
+        .ref()
+        .child("tasksRequest")
+        .child(widget.userTaskRequest!.taskRequestId!)
+        .child("bargainPrice")
+        .set('');
   }
 
   acceptTaskRequest(BuildContext context) async {
@@ -183,11 +183,11 @@ class _NotificationDialogueBoxState extends State<NotificationDialogueBox> {
     String bargainPrice = widget.userTaskRequest!.bargainPrice!;
     print(bargainPrice);
     FirebaseDatabase.instance
-            .ref()
-            .child("tasksRequest")
-            .child(widget.userTaskRequest!.taskRequestId!)
-            .child("finalPrice")
-            .set(bargainPrice);
+        .ref()
+        .child("tasksRequest")
+        .child(widget.userTaskRequest!.taskRequestId!)
+        .child("finalPrice")
+        .set(bargainPrice);
 
     //ref.child(widget.userTaskRequest!.taskRequestId!).child('finalPrice').set(value)
     // final auth = FirebaseAuth.instance;
